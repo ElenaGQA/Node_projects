@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         event.preventDefault();
         let titleValue = title.value;
         let contentValue = content.value;
-        //we didn' write the validation 
+        //we didn' write the validation, it's in the server 
         fetch('/add-post', {
             method: "POST",
             headers: {
@@ -46,7 +46,7 @@ function displayPosts() {
                 const li = document.createElement("li");
                 li.textContent = `<p>${post.title}</p><p>${post.content}</p> <button class = "deleteButton" data-id ="${post.id}" >Delete</button>`;
                 postList.appendChild(li);
-                li.querySelector(".deleteButton").addEventListener('click', () => { //skip for later
+                li.querySelector(".deleteButton").addEventListener('click', () => { //skip for later (id)
                     deletePost(li.querySelector(".deleteButton").getAttribute('data-id'));
                 })
             });
