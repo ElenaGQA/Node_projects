@@ -5,12 +5,11 @@ let content = document.querySelector("#content");
 
 
 document.addEventListener("DOMContentLoaded", (event) => {
-    displayPosts()
+    displayPosts();
     postForm.addEventListener("submit", (event) => {
         event.preventDefault();
         let titleValue = title.value;
         let contentValue = content.value;
-        //we didn' write the validation, it's in the server 
         fetch('/add-post', {
             method: "POST",
             headers: {
@@ -22,35 +21,28 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .then(res => {
                 titleValue = "";
                 contentValue = "";
-                location.reload(); //displayPosts();
+                location.reload();
             })
             .catch(err => {
                 console.log(err.message);
             })
-
     })
 })
 
 function displayPosts() {
-    fetch('/posts', {
-        method: "GET",
-        headers: {
-            'Content-Type': 'application/json' // ????
-        }
-    })
+    fetch('/posts')
         .then(res => res.json())
         .then(data => {
-            postList.innerHTML = "";  // Clear existing list
-
+            postList.innerHTML = "";
             data.forEach(post => {
                 const li = document.createElement("li");
-                li.textContent = `<p>${post.title}</p><p>${post.content}</p> <button class = "deleteButton" data-id ="${post.id}" >Delete</button>`;
+                li.innerHTML = `<p>${post.title}</p><p>${post.content}</p> <button class = "deleteButton" data-id ="${post.id}" >Delete</button>`;
                 postList.appendChild(li);
-                li.querySelector(".deleteButton").addEventListener('click', () => { //skip for later (id)
+
+                li.querySelector(".deleteButton").addEventListener('click', () => {
                     deletePost(li.querySelector(".deleteButton").getAttribute('data-id'));
                 })
             });
-
         })
         .catch(err => {
             console.log(err.message);
@@ -72,6 +64,6 @@ function deletePost(id) {
             })
             .catch(err => {
                 console.log(err.message);
-            });
+            })
     }
 }
